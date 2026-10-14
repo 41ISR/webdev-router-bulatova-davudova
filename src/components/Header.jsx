@@ -1,11 +1,13 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 export default function Header() {
-  function handleSearchKeyDown(e) {
-    if (e.key === 'Enter' && e.target.value.trim()) {
-      // onSearch(e.target.value.trim());
-      e.target.value = '';
-    }
+  const navigate = useNavigate()
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    navigate("/search?q=" + encodeURIComponent(e.target.query.value.trim()))
+
+   // console.log(e.target.query.value)
+
   }
 
   return (
@@ -26,13 +28,13 @@ export default function Header() {
           <NavLink className={'nav-link'} to="/contacts">Контакты</NavLink>
         </nav>
 
-        <div className="header-search">
-          <input type="text" placeholder="Найти растение..." onKeyDown={handleSearchKeyDown} />
-        </div>
+        <form onSubmit={handleSubmit} className="header-search">
+          <input name="query" type="text" placeholder="Найти растение..." />
+        </form>
       </div>
     </header>
   );
-}
+} 
 
 function NavItem({ label, page, currentPage, onNavigate }) {
   return (
